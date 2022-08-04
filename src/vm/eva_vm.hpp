@@ -5,9 +5,10 @@
 #include <vector>
 
 #include "../bytecode/opcode.hpp"
+#include "../logger/logger.hpp"
 
 /**
- * @brief 
+ * @brief
  *  Reads the current byte in the bytecode
  *  and advances the ip pointer.
  */
@@ -16,7 +17,7 @@
 namespace Eva
 {
     /**
-     * @brief 
+     * @brief
      * @class
      *  Base class for Eva Virtual Machine.
      */
@@ -50,12 +51,15 @@ namespace Eva
          */
         void eval()
         {
-            for (;;)
+            while (true)
             {
-                switch (*ip++)
+                auto opcode = READ_BYTE();
+                switch (opcode)
                 {
                 case OP_HALT:
                     return;
+                default:
+                    DIE << "Unknown opcode: " << std::hex << opcode;
                 }
             }
         }
